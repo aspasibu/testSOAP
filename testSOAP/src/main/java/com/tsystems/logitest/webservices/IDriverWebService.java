@@ -1,4 +1,4 @@
-package webServices;
+package com.tsystems.logitest.webservices;
 
 import javax.jws.WebService;
 
