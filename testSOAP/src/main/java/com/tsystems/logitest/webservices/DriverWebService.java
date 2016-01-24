@@ -2,7 +2,7 @@ package com.tsystems.logitest.webservices;
 
 import javax.jws.WebService;
 
-@WebService(endpointInterface = "webApp.IDriverWebService")
+@WebService(endpointInterface = "com.tsystems.logitest.webservices.IDriverWebService")
 public class DriverWebService implements IDriverWebService {
 
 	public int addDriver(String name, String surname) {

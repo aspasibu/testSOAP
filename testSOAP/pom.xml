@@ -9,7 +9,7 @@
 	<url>http://maven.apache.org</url>
 	<properties>
 		<spring.version>3.1.0.RELEASE</spring.version>
-		<cxf.version>2.7.0</cxf.version>
+		<cxf.version>2.7.18</cxf.version>
 		<junit.version>4.11</junit.version>
 		<spring.data>1.3.4.RELEASE</spring.data>
 	</properties>
@@ -26,17 +26,27 @@
 			<artifactId>spring-web</artifactId>
 			<version>${spring.version}</version>
 		</dependency>
-		
+
 		<dependency>
-            <groupId>org.springframework.data</groupId>
-            <artifactId>spring-data-jpa</artifactId>
-            <version>${spring.data}</version>
-        </dependency>
+			<groupId>org.springframework.data</groupId>
+			<artifactId>spring-data-jpa</artifactId>
+			<version>${spring.data}</version>
+		</dependency>
 
 		<!-- CXF -->
 		<dependency>
 			<groupId>org.apache.cxf</groupId>
 			<artifactId>cxf-rt-frontend-jaxws</artifactId>
+			<version>${cxf.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.cxf</groupId>
+			<artifactId>cxf-rt-transports-http</artifactId>
+			<version>${cxf.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.cxf</groupId>
+			<artifactId>cxf-rt-transports-http-jetty</artifactId>
 			<version>${cxf.version}</version>
 		</dependency>
 

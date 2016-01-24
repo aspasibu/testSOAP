@@ -2,6 +2,7 @@ package com.tsystems.logitest.webservices;
 
 import javax.jws.WebService;
 
+@SuppressWarnings("restriction")
 @WebService
 public interface IDriverWebService {
 	
