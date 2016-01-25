@@ -6,13 +6,13 @@ import com.tsystems.logitest.entity.Driver;
 
 public interface DriverService {
 
-    Driver addDriver(Driver driver);
+	Long addDriver(Driver driver);
 
-    void delete(long id);
+	void delete(long id);
 
-    Driver getByName(String name);
+	Driver getByName(String name);
 
-    Driver editDriver(Driver driver);
+	Driver editDriver(Driver driver);
 
-    List<Driver> getAll();
+	List<Driver> getAll();
 }

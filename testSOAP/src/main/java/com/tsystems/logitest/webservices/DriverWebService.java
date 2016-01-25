@@ -2,21 +2,16 @@ package com.tsystems.logitest.webservices;
 
 import javax.jws.WebService;
 
-@WebService(endpointInterface = "com.tsystems.logitest.webservices.IDriverWebService")
-public class DriverWebService implements IDriverWebService {
+import com.tsystems.logitest.entity.Driver;
+import com.tsystems.logitest.webservices.request.RequestAddDriver;
 
-	public int addDriver(String name, String surname) {
-		return 1;
-	}
+@SuppressWarnings("restriction")
+@WebService
+public interface DriverWebService {
 
-	public boolean editDriver(int idDriver, String name, String surname) {
-		// TODO Auto-generated method stub
-		return false;
-	}
+	public Long addDriver(RequestAddDriver driverRequest);
 
-	public boolean deleteDriver(int idDriver) {
-		// TODO Auto-generated method stub
-		return false;
-	}
+	public boolean editDriver(int idDriver, Driver driver);
 
+	public boolean deleteDriver(int idDriver);
 }

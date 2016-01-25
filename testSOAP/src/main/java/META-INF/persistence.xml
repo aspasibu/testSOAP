@@ -4,7 +4,8 @@
 	version="2.0" xmlns="http://java.sun.com/xml/ns/persistence">
 	<persistence-unit name="drivers" transaction-type="RESOURCE_LOCAL">
 		<provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
-		<!-- <class>com.t_systems.jpatest.Driver</class> -->
+		<class>com.tsystems.logitest.entity.Driver</class>
+		<class>com.tsystems.logitest.entity.Events</class>
 		<properties>
 <!-- 			<property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver" />
 			<property name="javax.persistence.jdbc.url" value="jdbc:postgresql://127.0.0.1:5432/logi" />
