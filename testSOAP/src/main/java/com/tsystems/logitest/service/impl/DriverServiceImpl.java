@@ -12,29 +12,28 @@ import com.tsystems.logitest.service.DriverService;
 @Service
 public class DriverServiceImpl implements DriverService {
 
-	@Autowired
-	private DriverRepository driverRepository;
+    @Autowired
+    private DriverRepository driverRepository;
 
-	public Long addDriver(Driver driver) {
-		Driver savedDriver = driverRepository.saveAndFlush(driver);
-		return savedDriver.getId();
-	}
+    public Long addDriver(Driver driver) {
+	Driver savedDriver = driverRepository.saveAndFlush(driver);
+	return savedDriver.getId();
+    }
 
-	public void delete(long id) {
-		driverRepository.delete(id);
+    public void delete(long id) {
+	driverRepository.delete(id);
+    }
 
-	}
+    public boolean editDriver(Driver driver) {
+	return driverRepository.saveAndFlush(driver) == null;
+    }
 
-	public Driver editDriver(Driver driver) {
-		return driverRepository.saveAndFlush(driver);
-	}
+    public List<Driver> getAll() {
+	return driverRepository.findAll();
+    }
 
-	public List<Driver> getAll() {
-		return driverRepository.findAll();
-	}
-
-	public Driver getByName(String name) {
-		return driverRepository.findByName(name);
-	}
+    public Driver getByName(String name) {
+	return driverRepository.findByName(name);
+    }
 
 }

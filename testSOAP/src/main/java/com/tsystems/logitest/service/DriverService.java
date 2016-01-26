@@ -12,7 +12,7 @@ public interface DriverService {
 
 	Driver getByName(String name);
 
-	Driver editDriver(Driver driver);
+	boolean editDriver(Driver driver);
 
 	List<Driver> getAll();
 }

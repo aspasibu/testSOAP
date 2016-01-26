@@ -1,17 +1,16 @@
 package com.tsystems.logitest.webservices;
 
+import javax.jws.WebParam;
 import javax.jws.WebService;
 
 import com.tsystems.logitest.entity.Driver;
-import com.tsystems.logitest.webservices.request.RequestAddDriver;
 
-@SuppressWarnings("restriction")
 @WebService
 public interface DriverWebService {
 
-	public Long addDriver(RequestAddDriver driverRequest);
+	public Long addDriver(Driver driver);
 
-	public boolean editDriver(int idDriver, Driver driver);
+	public boolean editDriver(Driver driver);
 
-	public boolean deleteDriver(int idDriver);
+	public void deleteDriver(@WebParam(name="id") Long idDriver);
 }
