@@ -31,11 +31,19 @@ public class AuthEvents {
     private Driver driver;
 
     @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
     private EventType type;
 
+    @Column(nullable = false)
     private Date date;
 
     public AuthEvents() {
+    }
+    
+    public AuthEvents(Driver driver, EventType type, Date date) {
+    	this.driver = driver;
+    	this.type = type;
+    	this.date = date;
     }
 
     public Long getId() {
