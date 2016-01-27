@@ -2,6 +2,7 @@ package com.tsystems.logitest.service.impl;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,8 +41,10 @@ public class HosServiceImpl implements HosService {
 
 		Date total = new Date(0);
 
-		if (events != null || events.size() > 0) {
-
+		if (events != null && events.size() > 0) {
+			for (Iterator iterator = events.iterator(); iterator.hasNext();) {
+				AuthEvents authEvents = (AuthEvents) iterator.next();
+			}
 		}
 
 		return getResponseMessage(driver, startPeriod, endPeriod, total.getTime());
