@@ -38,6 +38,15 @@ http://cxf.apache.org/schemas/jaxws.xsd">
 
 	<jaxws:endpoint id="authSoapService" implementor="#authBean"
 		address="/auth" />
+		
+	<bean id="hosService" class="com.tsystems.logitest.service.impl.HosServiceImpl" />
+
+	<bean id="hosBean" class="com.tsystems.logitest.webservices.HosWebServiceImpl">
+		<property name="hs" ref="hosService" />
+	</bean>
+
+	<jaxws:endpoint id="hosSoapService" implementor="#hosBean"
+		address="/hos" />	
 
 	<bean id="dataSource"
 		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
