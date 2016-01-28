@@ -1,4 +1,4 @@
-package com.tsystems.logitest.entity.enums;
+package org.aspasibu.logitest.entity.enums;
 
 public enum EventType {
 	

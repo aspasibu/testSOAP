@@ -1,10 +1,11 @@
-package com.tsystems.logitest.webservices;
+package org.aspasibu.logitest.webservices;
 
 import javax.jws.WebService;
-import com.tsystems.logitest.entity.Driver;
-import com.tsystems.logitest.service.DriverService;
 
-@WebService(endpointInterface = "com.tsystems.logitest.webservices.DriverWebService")
+import org.aspasibu.logitest.entity.Driver;
+import org.aspasibu.logitest.service.DriverService;
+
+@WebService(endpointInterface = "org.aspasibu.logitest.webservices.DriverWebService")
 public class DriverWebServiceImpl implements DriverWebService {
 
     private DriverService ds;

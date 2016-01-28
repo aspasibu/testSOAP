@@ -16,32 +16,32 @@ http://cxf.apache.org/jaxws
 http://cxf.apache.org/schemas/jaxws.xsd">
 
 	<tx:annotation-driven />
-	<context:component-scan base-package="com.tsystems.logitest" />
+	<context:component-scan base-package="org.aspasibu.logitest" />
 
-	<jpa:repositories base-package="com.tsystems.logitest.repository" />
+	<jpa:repositories base-package="org.aspasibu.logitest.repository" />
 	<import resource="classpath:META-INF/cxf/cxf.xml" />
 
-	<bean id="driverService" class="com.tsystems.logitest.service.impl.DriverServiceImpl" />
+	<bean id="driverService" class="org.aspasibu.logitest.service.impl.DriverServiceImpl" />
 
-	<bean id="driverBean" class="com.tsystems.logitest.webservices.DriverWebServiceImpl">
+	<bean id="driverBean" class="org.aspasibu.logitest.webservices.DriverWebServiceImpl">
 		<property name="ds" ref="driverService" />
 	</bean>
 
 	<jaxws:endpoint id="driverSoapService" implementor="#driverBean"
 		address="/driver" />
 
-	<bean id="dutyService" class="com.tsystems.logitest.service.impl.DutyServiceImpl" />
+	<bean id="dutyService" class="org.aspasibu.logitest.service.impl.DutyServiceImpl" />
 
-	<bean id="dutyBean" class="com.tsystems.logitest.webservices.DutyWebServiceImpl">
+	<bean id="dutyBean" class="org.aspasibu.logitest.webservices.DutyWebServiceImpl">
 		<property name="as" ref="dutyService" />
 	</bean>
 
 	<jaxws:endpoint id="dutySoapService" implementor="#dutyBean"
 		address="/duty" />
 		
-	<bean id="hosService" class="com.tsystems.logitest.service.impl.HosServiceImpl" />
+	<bean id="hosService" class="org.aspasibu.logitest.service.impl.HosServiceImpl" />
 
-	<bean id="hosBean" class="com.tsystems.logitest.webservices.HosWebServiceImpl">
+	<bean id="hosBean" class="org.aspasibu.logitest.webservices.HosWebServiceImpl">
 		<property name="hs" ref="hosService" />
 	</bean>
 
@@ -61,7 +61,7 @@ http://cxf.apache.org/schemas/jaxws.xsd">
 		<property name="persistenceXmlLocation" value="classpath:META-INF/persistence.xml" />
 		<property name="dataSource" ref="dataSource" />
 		<property name="persistenceUnitName" value="drivers" />
-		<property name="packagesToScan" value="com.tsystems.logitest.entity" />
+		<property name="packagesToScan" value="org.aspasibu.logitest.entity" />
 		<property name="jpaVendorAdapter">
 			<bean
 				class="org.springframework.orm.jpa.vendor.EclipseLinkJpaVendorAdapter">

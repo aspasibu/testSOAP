@@ -1,4 +1,4 @@
-package com.tsystems.logitest.service;
+package org.aspasibu.logitest.service;
 
 import java.util.Date;
 

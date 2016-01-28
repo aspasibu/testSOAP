@@ -1,9 +1,9 @@
-package com.tsystems.logitest.webservices;
+package org.aspasibu.logitest.webservices;
 
 import javax.jws.WebParam;
 import javax.jws.WebService;
 
-import com.tsystems.logitest.entity.Driver;
+import org.aspasibu.logitest.entity.Driver;
 
 @WebService
 public interface DriverWebService {

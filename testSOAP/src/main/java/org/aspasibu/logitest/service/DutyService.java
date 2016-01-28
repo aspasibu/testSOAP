@@ -1,6 +1,6 @@
-package com.tsystems.logitest.service;
+package org.aspasibu.logitest.service;
 
-import com.tsystems.logitest.service.errors.DutyErrorType;
+import org.aspasibu.logitest.service.errors.DutyErrorType;
 
 public interface DutyService {
     

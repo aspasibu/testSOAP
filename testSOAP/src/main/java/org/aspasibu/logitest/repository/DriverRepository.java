@@ -1,10 +1,9 @@
-package com.tsystems.logitest.repository;
+package org.aspasibu.logitest.repository;
 
+import org.aspasibu.logitest.entity.Driver;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
-
-import com.tsystems.logitest.entity.Driver;
 
 public interface DriverRepository extends JpaRepository<Driver, Long> {
 

@@ -1,19 +1,18 @@
-package com.tsystems.logitest.service.impl;
+package org.aspasibu.logitest.service.impl;
 
 import java.util.Date;
 import java.util.List;
 
+import org.aspasibu.logitest.entity.Driver;
+import org.aspasibu.logitest.entity.DutyEvents;
+import org.aspasibu.logitest.entity.enums.EventType;
+import org.aspasibu.logitest.repository.DriverRepository;
+import org.aspasibu.logitest.repository.DutyRepository;
+import org.aspasibu.logitest.service.DutyService;
+import org.aspasibu.logitest.service.errors.DutyErrorType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-
-import com.tsystems.logitest.entity.DutyEvents;
-import com.tsystems.logitest.entity.Driver;
-import com.tsystems.logitest.entity.enums.EventType;
-import com.tsystems.logitest.repository.DutyRepository;
-import com.tsystems.logitest.repository.DriverRepository;
-import com.tsystems.logitest.service.DutyService;
-import com.tsystems.logitest.service.errors.DutyErrorType;
 
 public class DutyServiceImpl implements DutyService {
 

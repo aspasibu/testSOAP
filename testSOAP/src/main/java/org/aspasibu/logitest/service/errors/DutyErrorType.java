@@ -1,4 +1,4 @@
-package com.tsystems.logitest.service.errors;
+package org.aspasibu.logitest.service.errors;
 
 public enum DutyErrorType {
 

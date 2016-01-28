@@ -1,15 +1,14 @@
-package com.tsystems.logitest.repository;
+package org.aspasibu.logitest.repository;
 
 import java.util.Date;
 import java.util.List;
 
+import org.aspasibu.logitest.entity.Driver;
+import org.aspasibu.logitest.entity.DutyEvents;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
-
-import com.tsystems.logitest.entity.Driver;
-import com.tsystems.logitest.entity.DutyEvents;
 
 public interface DutyRepository extends JpaRepository<DutyEvents, Long> {
 

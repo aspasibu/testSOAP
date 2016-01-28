@@ -1,4 +1,4 @@
-package com.tsystems.logitest.webservices.request;
+package org.aspasibu.logitest.webservices.request;
 
 import java.io.Serializable;
 

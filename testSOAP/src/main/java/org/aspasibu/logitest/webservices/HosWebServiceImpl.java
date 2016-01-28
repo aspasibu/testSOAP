@@ -1,14 +1,13 @@
-package com.tsystems.logitest.webservices;
+package org.aspasibu.logitest.webservices;
 
 import java.util.Date;
 
 import javax.jws.WebService;
 
+import org.aspasibu.logitest.service.HosService;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.tsystems.logitest.service.HosService;
-
-@WebService(endpointInterface = "com.tsystems.logitest.webservices.HosWebService")
+@WebService(endpointInterface = "org.aspasibu.logitest.webservices.HosWebService")
 public class HosWebServiceImpl implements HosWebService {
 
 	@Autowired

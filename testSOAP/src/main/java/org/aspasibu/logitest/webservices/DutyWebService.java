@@ -1,9 +1,9 @@
-package com.tsystems.logitest.webservices;
+package org.aspasibu.logitest.webservices;
 
 import javax.jws.WebParam;
 import javax.jws.WebService;
 
-import com.tsystems.logitest.service.errors.DutyErrorType;
+import org.aspasibu.logitest.service.errors.DutyErrorType;
 
 @WebService
 public interface DutyWebService {

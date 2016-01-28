@@ -1,8 +1,8 @@
-package com.tsystems.logitest.service;
+package org.aspasibu.logitest.service;
 
 import java.util.List;
 
-import com.tsystems.logitest.entity.Driver;
+import org.aspasibu.logitest.entity.Driver;
 
 public interface DriverService {
 

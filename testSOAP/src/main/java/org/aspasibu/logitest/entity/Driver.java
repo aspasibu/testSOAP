@@ -1,4 +1,4 @@
-package com.tsystems.logitest.entity;
+package org.aspasibu.logitest.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

@@ -1,4 +1,4 @@
-package com.tsystems.logitest;
+package org.aspasibu.logitest;
 
 /**
  * @author andrey.spasibukhov@yandex.ru
