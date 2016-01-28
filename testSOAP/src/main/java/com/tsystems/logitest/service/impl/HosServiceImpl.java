@@ -7,9 +7,11 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.tsystems.logitest.entity.AuthEvents;
+import com.tsystems.logitest.LogiTestUtils;
+import com.tsystems.logitest.entity.DutyEvents;
 import com.tsystems.logitest.entity.Driver;
-import com.tsystems.logitest.repository.AuthRepository;
+import com.tsystems.logitest.entity.enums.EventType;
+import com.tsystems.logitest.repository.DutyRepository;
 import com.tsystems.logitest.repository.DriverRepository;
 import com.tsystems.logitest.service.HosService;
 
@@ -20,10 +22,11 @@ public class HosServiceImpl implements HosService {
 
 	private final String RESPONSE_USER_NOT_FOUND = "USER NOT FOUND";
 
-	private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy.MM.dd HH:mm:ss");
+	private SimpleDateFormat dateFormat = new SimpleDateFormat(
+			"yyyy.MM.dd HH:mm:ss");
 
 	@Autowired
-	private AuthRepository authEventsRepository;
+	private DutyRepository dutyEventsRepository;
 
 	@Autowired
 	private DriverRepository driverRepository;
@@ -31,26 +34,39 @@ public class HosServiceImpl implements HosService {
 	@Override
 	public String calculate(String username, Date startPeriod, Date endPeriod) {
 
+		// check if driver with the username exists
 		Driver driver = driverRepository.findByUserName(username);
 
-		if (driverRepository.findByUserName(username) == null) {
+		if (driver == null) {
 			return RESPONSE_USER_NOT_FOUND;
 		}
 
-		List<AuthEvents> events = authEventsRepository.getEventsForPeriod(username, startPeriod, endPeriod);
+		// get list of activities for the driver
+		List<DutyEvents> events = dutyEventsRepository
+				.getEventsForPeriod(username, startPeriod, endPeriod);
 
-		Date total = new Date(0);
-
+		// we have to supplement the list of activities by first LOGIN entity and last LOGOUT entity
 		if (events != null && events.size() > 0) {
-			for (Iterator iterator = events.iterator(); iterator.hasNext();) {
-				AuthEvents authEvents = (AuthEvents) iterator.next();
-			}
+			events.add(0, new DutyEvents(driver, EventType.LOGIN, startPeriod));
+			events.add(new DutyEvents(driver, EventType.LOGOUT, endPeriod));
 		}
 
-		return getResponseMessage(driver, startPeriod, endPeriod, total.getTime());
+		long hours = getSumActivity(events);
+
+		return getResponseMessage(driver, startPeriod, endPeriod, hours);
 	}
 
-	private String getResponseMessage(Driver driver, Date startPeriod, Date endPeriod, long total) {
+	/** builds a response message:
+	 * "%SURNAME,%NAME for a period %START - %END: %TOTAL time"
+	 * 
+	 * @param driver
+	 * @param startPeriod
+	 * @param endPeriod
+	 * @param total
+	 * @return String message
+	 */
+	private String getResponseMessage(Driver driver, Date startPeriod,
+			Date endPeriod, long total) {
 		StringBuilder responseMeassge = new StringBuilder();
 		responseMeassge.append(driver.getSurname());
 		responseMeassge.append(", ");
@@ -60,8 +76,42 @@ public class HosServiceImpl implements HosService {
 		responseMeassge.append(" - ");
 		responseMeassge.append(dateFormat.format(endPeriod));
 		responseMeassge.append(": ");
-		responseMeassge.append(String.valueOf(total));
+		responseMeassge.append(LogiTestUtils.convertMillisToHours(total));		
 		return responseMeassge.toString();
 	}
+
+	/**Calculate sum of activity hours for a list of activities
+	 * 
+	 * @param events
+	 * @return
+	 */
+	private long getSumActivity(List<DutyEvents> events) {
+		if (events == null) {
+			return 0;
+		}
+
+		long sum = 0;
+
+		Date tmpDate = null;
+
+		for (DutyEvents event : events) {
+			if (event != null && event.getType() != null) {
+				switch (event.getType()) {
+					case LOGIN :
+						tmpDate = event.getDate();
+						break;
+					case LOGOUT :
+						if (tmpDate != null && event.getDate() != null) {
+							sum += event.getDate().getTime()
+									- tmpDate.getTime();
+							tmpDate = null;
+						}
+						break;
+				}
+			}
+		}
+
+		return sum;
+	}	
 
 }

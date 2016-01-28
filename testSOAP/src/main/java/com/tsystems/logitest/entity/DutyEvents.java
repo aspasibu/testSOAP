@@ -19,7 +19,7 @@ import com.tsystems.logitest.entity.enums.EventType;
 
 @Entity
 @TableGenerator(name = "events_gen", initialValue = 2, allocationSize = 100)
-public class AuthEvents {
+public class DutyEvents {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "events_gen")
@@ -31,11 +31,19 @@ public class AuthEvents {
     private Driver driver;
 
     @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
     private EventType type;
 
+    @Column(nullable = false)
     private Date date;
 
-    public AuthEvents() {
+    public DutyEvents() {
+    }
+    
+    public DutyEvents(Driver driver, EventType type, Date date) {
+    	this.driver = driver;
+    	this.type = type;
+    	this.date = date;
     }
 
     public Long getId() {

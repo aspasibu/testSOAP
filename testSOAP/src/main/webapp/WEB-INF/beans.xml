@@ -30,14 +30,14 @@ http://cxf.apache.org/schemas/jaxws.xsd">
 	<jaxws:endpoint id="driverSoapService" implementor="#driverBean"
 		address="/driver" />
 
-	<bean id="authService" class="com.tsystems.logitest.service.impl.AuthServiceImpl" />
+	<bean id="dutyService" class="com.tsystems.logitest.service.impl.DutyServiceImpl" />
 
-	<bean id="authBean" class="com.tsystems.logitest.webservices.AuthWebServiceImpl">
-		<property name="as" ref="authService" />
+	<bean id="dutyBean" class="com.tsystems.logitest.webservices.DutyWebServiceImpl">
+		<property name="as" ref="dutyService" />
 	</bean>
 
-	<jaxws:endpoint id="authSoapService" implementor="#authBean"
-		address="/auth" />
+	<jaxws:endpoint id="dutySoapService" implementor="#dutyBean"
+		address="/duty" />
 		
 	<bean id="hosService" class="com.tsystems.logitest.service.impl.HosServiceImpl" />
 

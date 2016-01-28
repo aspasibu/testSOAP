@@ -17,39 +17,15 @@
 
 	<!-- CXF -->
 	<servlet>
-		<servlet-name>DriverServlet</servlet-name>
-		<display-name>Driver Servlet</display-name>
+		<servlet-name>SoapServlet</servlet-name>
+		<display-name>Soap Servlet</display-name>
 		<servlet-class>org.apache.cxf.transport.servlet.CXFServlet</servlet-class>
 		<load-on-startup>1</load-on-startup>
 	</servlet>
 
 	<servlet-mapping>
-		<servlet-name>DriverServlet</servlet-name>
-		<url-pattern>/driver/*</url-pattern>
-	</servlet-mapping>
-	
-	<servlet>
-		<servlet-name>AuthServlet</servlet-name>
-		<display-name>Auth Servlet</display-name>
-		<servlet-class>org.apache.cxf.transport.servlet.CXFServlet</servlet-class>
-		<load-on-startup>1</load-on-startup>
-	</servlet>
-
-	<servlet-mapping>
-		<servlet-name>AuthServlet</servlet-name>
-		<url-pattern>/auth/*</url-pattern>
-	</servlet-mapping>
-	
-	<servlet>
-		<servlet-name>HosServlet</servlet-name>
-		<display-name>Hos Servlet</display-name>
-		<servlet-class>org.apache.cxf.transport.servlet.CXFServlet</servlet-class>
-		<load-on-startup>1</load-on-startup>
-	</servlet>
-
-	<servlet-mapping>
-		<servlet-name>HosServlet</servlet-name>
-		<url-pattern>/hos/*</url-pattern>
+		<servlet-name>SoapServlet</servlet-name>
+		<url-pattern>/*</url-pattern>
 	</servlet-mapping>
 	
 </web-app>
