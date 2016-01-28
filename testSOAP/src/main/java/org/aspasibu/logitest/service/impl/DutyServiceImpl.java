@@ -9,7 +9,7 @@ import org.aspasibu.logitest.entity.enums.EventType;
 import org.aspasibu.logitest.repository.DriverRepository;
 import org.aspasibu.logitest.repository.DutyRepository;
 import org.aspasibu.logitest.service.DutyService;
-import org.aspasibu.logitest.service.errors.DutyErrorType;
+import org.aspasibu.logitest.types.DutyResponseType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -23,25 +23,25 @@ public class DutyServiceImpl implements DutyService {
 	private DutyRepository dutyEventsRepository;
 
 	@Override
-	public DutyErrorType logIn(String userName, String password) {
+	public DutyResponseType logIn(String userName, String password) {
 		return PerformAuthAction(userName, password, EventType.LOGIN);
 	}
 
 	@Override
-	public DutyErrorType logOut(String userName) {
+	public DutyResponseType logOut(String userName) {
 		return PerformAuthAction(userName, "", EventType.LOGOUT);
 	}
 
-	private DutyErrorType PerformAuthAction(String userName, String password, EventType type) {
+	private DutyResponseType PerformAuthAction(String userName, String password, EventType type) {
 		// verify if user is existed
 		Driver driver = driverRepository.findByUserName(userName);
 		if (driver == null) {
-			return DutyErrorType.USER_NOT_FOUND;
+			return DutyResponseType.USER_NOT_FOUND;
 		}
 
 		// verify password
 		if (type == EventType.LOGIN && password != null && !password.equals(driver.getPassword())) {
-			return DutyErrorType.WRONG_PASSWORD;
+			return DutyResponseType.WRONG_PASSWORD;
 		}
 
 		// get last event - if is LOGIN then deny
@@ -50,9 +50,9 @@ public class DutyServiceImpl implements DutyService {
 		if (events != null && events.size() != 0) {
 			if (events.get(0).getType() == type) {
 				if (type == EventType.LOGIN) {
-					return DutyErrorType.SECOND_ATTEMPT_LOGIN;
+					return DutyResponseType.SECOND_ATTEMPT_LOGIN;
 				} else if (type == EventType.LOGOUT) {
-					return DutyErrorType.SECOND_ATTEMPT_LOGOUT;
+					return DutyResponseType.SECOND_ATTEMPT_LOGOUT;
 				}
 			}
 		}
@@ -60,7 +60,7 @@ public class DutyServiceImpl implements DutyService {
 		// if all Ok then insert into DB Login record
 		saveAuthAction(driver, type);
 
-		return DutyErrorType.SUCCESSFULL;
+		return DutyResponseType.SUCCESSFULL;
 	}
 
 	private boolean saveAuthAction(Driver driver, EventType type) {

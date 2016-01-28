@@ -5,31 +5,37 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.TableGenerator;
+import javax.persistence.SequenceGenerator;
 
 @Entity
-//Define a sequence - might also be in another class:
-@TableGenerator(name="driver_gen", initialValue=2, allocationSize=100)
+@SequenceGenerator(name = "driver_gen", initialValue = 1)
 public class Driver {
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="driver_gen")
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "driver_gen")
 	@Column(nullable = false)
 	private Long id;
-	
+
 	@Column(nullable = false)
 	private String name;
-	
+
 	@Column(nullable = false)
 	private String surname;
-	
-	@Column(unique=true)
+
+	@Column(unique = true, nullable = false)
 	private String userName;
 
 	@Column(nullable = false)
 	private String password;
 
 	public Driver() {
+	}
+
+	public Driver(String surname, String name, String username, String password) {
+		this.surname = surname;
+		this.name = name;
+		this.userName = username;
+		this.password = password;
 	}
 
 	public Long getId() {

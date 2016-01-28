@@ -1,6 +1,6 @@
-package org.aspasibu.logitest.service.errors;
+package org.aspasibu.logitest.types;
 
-public enum DutyErrorType {
+public enum DutyResponseType {
 
 	USER_NOT_FOUND,
 

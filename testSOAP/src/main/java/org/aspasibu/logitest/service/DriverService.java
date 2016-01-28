@@ -1,18 +1,12 @@
 package org.aspasibu.logitest.service;
 
-import java.util.List;
-
 import org.aspasibu.logitest.entity.Driver;
 
 public interface DriverService {
 
-	Long addDriver(Driver driver);
+	public String addDriver(String surname, String name, String username, String password);
 
-	void delete(long id);
+	public String editDriver(Driver driver);
 
-	Driver getByName(String name);
-
-	boolean editDriver(Driver driver);
-
-	List<Driver> getAll();
+	public String deleteDriver(Long idDriver);
 }

@@ -1,11 +1,9 @@
 package org.aspasibu.logitest.service.impl;
 
-import java.util.List;
-
 import org.aspasibu.logitest.entity.Driver;
 import org.aspasibu.logitest.repository.DriverRepository;
 import org.aspasibu.logitest.service.DriverService;
-import org.eclipse.persistence.exceptions.DatabaseException;
+import org.aspasibu.logitest.types.DriverResponseType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,34 +14,54 @@ public class DriverServiceImpl implements DriverService {
 	private DriverRepository driverRepository;
 
 	@Override
-	public Long addDriver(Driver driver) {
+	public String addDriver(String surname, String name, String username, String password) {
+		if (driverRepository.findByUserName(username) != null) {
+			return DriverResponseType.ALREADY_CREATED.toString();
+		}
+
 		try {
-			Driver savedDriver = driverRepository.saveAndFlush(driver);
-			return savedDriver.getId();
-		} catch (DatabaseException e) {
-			return (long) -1;
+			Driver driver = new Driver(surname, name, username, password);
+			driver = driverRepository.saveAndFlush(driver);
+			return driver.getId().toString();
+		} catch (Exception e) {
+			return DriverResponseType.DATABASE_EXCEPTION.toString();
 		}
 
 	}
 
 	@Override
-	public void delete(long id) {
-		driverRepository.delete(id);
+	public String deleteDriver(Long id) {
+		try {
+			driverRepository.delete(id);
+			return DriverResponseType.SICCESSFULLY_DELETED.toString();
+		} catch (Exception e) {
+			return DriverResponseType.DATABASE_EXCEPTION.toString();
+		}
 	}
 
 	@Override
-	public boolean editDriver(Driver driver) {
-		return driverRepository.saveAndFlush(driver) == null;
+	public String editDriver(Driver driver) {
+		try {
+			driverRepository.saveAndFlush(driver);
+			return DriverResponseType.SICCESSFULLY_EDITED.toString();
+		} catch (Exception e) {
+			return DriverResponseType.DATABASE_EXCEPTION.toString();
+		}
 	}
 
-	@Override
-	public List<Driver> getAll() {
-		return driverRepository.findAll();
+	/**
+	 * @return the driverRepository
+	 */
+	public DriverRepository getDriverRepository() {
+		return driverRepository;
 	}
 
-	@Override
-	public Driver getByName(String name) {
-		return driverRepository.findByName(name);
+	/**
+	 * @param driverRepository
+	 *            the driverRepository to set
+	 */
+	public void setDriverRepository(DriverRepository driverRepository) {
+		this.driverRepository = driverRepository;
 	}
 
 }

@@ -12,12 +12,12 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.TableGenerator;
+import javax.persistence.SequenceGenerator;
 
 import org.aspasibu.logitest.entity.enums.EventType;
 
 @Entity
-@TableGenerator(name = "events_gen", initialValue = 2, allocationSize = 100)
+@SequenceGenerator(name = "events_gen", initialValue = 1)
 public class DutyEvents {
 
 	@Id

@@ -8,9 +8,10 @@ import org.aspasibu.logitest.entity.Driver;
 @WebService
 public interface DriverWebService {
 
-	public Long addDriver(@WebParam(name = "driver") Driver driver);
+	public String addDriver(@WebParam(name = "surname") String surname, @WebParam(name = "name") String name,
+			@WebParam(name = "surname") String username, @WebParam(name = "password") String password);
 
-	public boolean editDriver(@WebParam(name = "driver") Driver driver);
+	public String editDriver(@WebParam(name = "driver") Driver driver);
 
-	public void deleteDriver(@WebParam(name = "id") Long idDriver);
+	public String deleteDriver(@WebParam(name = "id") Long idDriver);
 }
