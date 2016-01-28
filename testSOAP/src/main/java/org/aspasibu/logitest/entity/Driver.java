@@ -1,5 +1,7 @@
 package org.aspasibu.logitest.entity;
 
+import java.util.Objects;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -31,7 +33,8 @@ public class Driver {
 	public Driver() {
 	}
 
-	public Driver(String surname, String name, String username, String password) {
+	public Driver(String surname, String name, String username,
+			String password) {
 		this.surname = surname;
 		this.name = name;
 		this.userName = username;
@@ -76,5 +79,34 @@ public class Driver {
 
 	public void setPassword(String password) {
 		this.password = password;
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(this.getName(), this.getSurname(),
+				this.getPassword(), this.getUserName(), this.getId());
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Driver other = (Driver) obj;
+		if (!Objects.equals(this.getName(), other.getName()))
+			return false;
+		if (!Objects.equals(this.getSurname(), other.getSurname()))
+			return false;
+		if (!Objects.equals(this.getPassword(), other.getPassword()))
+			return false;
+		if (!Objects.equals(this.getUserName(), other.getUserName()))
+			return false;
+		if (!Objects.equals(this.getId(), other.getId()))
+			return false;
+		return true;
+
 	}
 }
