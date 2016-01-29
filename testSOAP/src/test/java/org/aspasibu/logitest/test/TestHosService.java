@@ -8,7 +8,7 @@ import org.aspasibu.logitest.service.impl.HosServiceImpl;
 import org.junit.Before;
 import org.junit.Test;
 
-public class HosServiceTest {
+public class TestHosService {
 
 	private DutyRepository dutyRepository;
 	private HosService hosService;

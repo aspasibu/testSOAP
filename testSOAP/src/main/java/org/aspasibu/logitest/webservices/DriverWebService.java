@@ -9,7 +9,7 @@ import org.aspasibu.logitest.entity.Driver;
 public interface DriverWebService {
 
 	public String addDriver(@WebParam(name = "surname") String surname, @WebParam(name = "name") String name,
-			@WebParam(name = "surname") String username, @WebParam(name = "password") String password);
+			@WebParam(name = "username") String username, @WebParam(name = "password") String password);
 
 	public String editDriver(@WebParam(name = "driver") Driver driver);
 

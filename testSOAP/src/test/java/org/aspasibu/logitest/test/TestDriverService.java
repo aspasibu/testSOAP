@@ -9,6 +9,7 @@ import static org.junit.Assert.assertEquals;
 
 import org.aspasibu.logitest.entity.Driver;
 import org.aspasibu.logitest.repository.DriverRepository;
+import org.aspasibu.logitest.service.DriverService;
 import org.aspasibu.logitest.service.impl.DriverServiceImpl;
 import org.aspasibu.logitest.types.DriverResponseType;
 
@@ -17,7 +18,7 @@ import org.junit.Test;
 
 public class TestDriverService {
 	private DriverRepository driverRepository;
-	private DriverServiceImpl driverService;
+	private DriverService driverService;
 	private Driver driver;
 	private Driver driverResponse;
 
@@ -39,7 +40,7 @@ public class TestDriverService {
 
 		replay(driverRepository);
 
-		driverService.setDriverRepository(driverRepository);
+		((DriverServiceImpl) driverService).setDriverRepository(driverRepository);
 
 		assertEquals("Message", driverService.addDriver("surname", "name", "username", "pass"), String.valueOf(1));
 		assertEquals("Message", driverService.addDriver("surname", "name", "username", "pass"), DriverResponseType.DATABASE_EXCEPTION.toString());
@@ -55,7 +56,7 @@ public class TestDriverService {
 		expectLastCall().andThrow(new RuntimeException());
 		replay(driverRepository);
 		
-		driverService.setDriverRepository(driverRepository);
+		((DriverServiceImpl) driverService).setDriverRepository(driverRepository);
 
 		assertEquals("Message", driverService.deleteDriver((long) 1), DriverResponseType.SICCESSFULLY_DELETED.toString());
 		assertEquals("Message", driverService.deleteDriver((long) 1), DriverResponseType.DATABASE_EXCEPTION.toString());		
@@ -70,7 +71,7 @@ public class TestDriverService {
 		expect(driverRepository.saveAndFlush(driver)).andThrow(new RuntimeException());
 
 		replay(driverRepository);
-		driverService.setDriverRepository(driverRepository);
+		((DriverServiceImpl) driverService).setDriverRepository(driverRepository);
 
 		assertEquals("Message", driverService.editDriver(driver), DriverResponseType.SICCESSFULLY_EDITED.toString());
 		assertEquals("Message", driverService.editDriver(driver), DriverResponseType.DATABASE_EXCEPTION.toString());

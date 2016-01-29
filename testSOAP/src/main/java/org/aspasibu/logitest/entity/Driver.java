@@ -9,6 +9,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
 
+import org.apache.commons.codec.digest.DigestUtils;
+
 @Entity
 @SequenceGenerator(name = "driver_gen", initialValue = 1)
 public class Driver {
@@ -38,7 +40,7 @@ public class Driver {
 		this.surname = surname;
 		this.name = name;
 		this.userName = username;
-		this.password = password;
+		setPassword(password);
 	}
 
 	public Long getId() {
@@ -78,7 +80,7 @@ public class Driver {
 	}
 
 	public void setPassword(String password) {
-		this.password = password;
+		this.password = DigestUtils.md5Hex(password);
 	}
 
 	@Override
@@ -108,5 +110,13 @@ public class Driver {
 			return false;
 		return true;
 
+	}
+
+	public boolean passwordEquals(String password) {
+		if (password == null) {
+			return false;
+		}		
+		
+		return DigestUtils.md5Hex(password).equals(this.password);
 	}
 }

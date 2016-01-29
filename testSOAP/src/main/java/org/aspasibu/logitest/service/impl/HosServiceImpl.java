@@ -1,5 +1,6 @@
 package org.aspasibu.logitest.service.impl;
 
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -12,6 +13,7 @@ import org.aspasibu.logitest.repository.DriverRepository;
 import org.aspasibu.logitest.repository.DutyRepository;
 import org.aspasibu.logitest.service.HosService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jms.core.JmsTemplate;
 
 public class HosServiceImpl implements HosService {
 
@@ -28,8 +30,11 @@ public class HosServiceImpl implements HosService {
 	@Autowired
 	private DriverRepository driverRepository;
 
+	@Autowired
+	private JmsTemplate jmsTemplate;
+
 	@Override
-	public String calculate(String username, Date startPeriod, Date endPeriod) {
+	public String calculate(String username, Date startPeriod, Date endPeriod) {		
 
 		// check if driver with the username exists
 		Driver driver = driverRepository.findByUserName(username);
@@ -38,6 +43,8 @@ public class HosServiceImpl implements HosService {
 			return RESPONSE_USER_NOT_FOUND;
 		}
 
+		//send message to JMS
+		sendToJms(driver,startPeriod,endPeriod);
 		// get list of activities for the driver
 
 		List<DutyEvents> events = dutyEventsRepository.getEventsForPeriod(username, startPeriod, endPeriod);
@@ -51,31 +58,7 @@ public class HosServiceImpl implements HosService {
 
 		long hours = getSumActivity(events);
 
-		return getResponseMessage(driver, startPeriod, endPeriod, hours);
-	}
-
-	/**
-	 * builds a response message:
-	 * "%SURNAME,%NAME for a period %START - %END: %TOTAL time"
-	 * 
-	 * @param driver
-	 * @param startPeriod
-	 * @param endPeriod
-	 * @param total
-	 * @return String message
-	 */
-	private String getResponseMessage(Driver driver, Date startPeriod, Date endPeriod, long total) {
-		StringBuilder responseMeassge = new StringBuilder();
-		responseMeassge.append(driver.getSurname());
-		responseMeassge.append(", ");
-		responseMeassge.append(driver.getName());
-		responseMeassge.append(" for a period ");
-		responseMeassge.append(dateFormat.format(startPeriod));
-		responseMeassge.append(" - ");
-		responseMeassge.append(dateFormat.format(endPeriod));
-		responseMeassge.append(": ");
-		responseMeassge.append(LogiTestUtils.convertMillisToHours(total));
-		return responseMeassge.toString();
+		return LogiTestUtils.convertMillisToStrHours(hours);
 	}
 
 	/**
@@ -111,6 +94,18 @@ public class HosServiceImpl implements HosService {
 		}
 
 		return sum;
+	}
+
+	private void sendToJms(Driver driver, Date startPeriod, Date endPeriod) {
+		StringBuilder text = new StringBuilder();
+//		text.append("«апрос расчета активности дл€ водител€ ");
+		text.append("Request for a calculation of a driver's activity ");
+		text.append(driver.getSurname());
+		text.append(", ");
+		text.append(driver.getName());
+		text.append(" during the period ");
+		text.append(dateFormat.format(startPeriod)).append(" - ").append(dateFormat.format(endPeriod));
+		jmsTemplate.convertAndSend(text.toString());
 	}
 
 }

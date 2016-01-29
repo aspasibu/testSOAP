@@ -40,7 +40,7 @@ public class DutyServiceImpl implements DutyService {
 		}
 
 		// verify password
-		if (type == EventType.LOGIN && password != null && !password.equals(driver.getPassword())) {
+		if (type == EventType.LOGIN && !driver.passwordEquals(password)){
 			return DutyResponseType.WRONG_PASSWORD;
 		}
 

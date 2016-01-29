@@ -7,7 +7,7 @@ package org.aspasibu.logitest;
  */
 public class LogiTestUtils {
 
-	public static String convertMillisToHours(long time) {
+	public static String convertMillisToStrHours(long time) {
 		long seconds = time / 1000;
 
 		long hours = seconds / 3600;
