@@ -43,11 +43,13 @@ public class TestHosService {
         Date startPeriod = new Date(0);
         Date endPeriod = new Date(15);
         Driver driver = new Driver();
-        DutyEvents event1 = new DutyEvents(driver, EventType.LOGIN, new Date(5));
-        DutyEvents event2 = new DutyEvents(driver, EventType.LOGOUT, new Date(10));
+        
 		List<DutyEvents> events = new ArrayList<>();
-		events.add(event1);
-		events.add(event2);
+		events.add(new DutyEvents(driver, EventType.LOGIN, new Date(3)));
+		events.add(new DutyEvents(driver, EventType.LOGIN, new Date(5)));
+		events.add(new DutyEvents(driver, EventType.LOGOUT, new Date(10)));
+		events.add(new DutyEvents(driver, EventType.LOGOUT, new Date(11)));
+		
 		expect(dutyRepository.getEventsForPeriod("", startPeriod, endPeriod)).andReturn(events);
 		expect(dutyRepository.getEventsForPeriod("", null, null)).andReturn(null);
 		replay(driverRepository);
