@@ -15,6 +15,7 @@ public class HosWebServiceImpl implements HosWebService {
 
 	@Override
 	public String calculate(String username, Date startPeriod, Date endPeriod) {
+		hs.sendToJms(username, startPeriod, endPeriod);
 		return hs.calculate(username, startPeriod, endPeriod);
 	}
 

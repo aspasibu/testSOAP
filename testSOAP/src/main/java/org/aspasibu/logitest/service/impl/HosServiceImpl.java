@@ -1,6 +1,5 @@
 package org.aspasibu.logitest.service.impl;
 
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -13,6 +12,7 @@ import org.aspasibu.logitest.repository.DriverRepository;
 import org.aspasibu.logitest.repository.DutyRepository;
 import org.aspasibu.logitest.service.HosService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jms.JmsException;
 import org.springframework.jms.core.JmsTemplate;
 
 public class HosServiceImpl implements HosService {
@@ -34,7 +34,7 @@ public class HosServiceImpl implements HosService {
 	private JmsTemplate jmsTemplate;
 
 	@Override
-	public String calculate(String username, Date startPeriod, Date endPeriod) {		
+	public String calculate(String username, Date startPeriod, Date endPeriod) {
 
 		// check if driver with the username exists
 		Driver driver = driverRepository.findByUserName(username);
@@ -42,9 +42,6 @@ public class HosServiceImpl implements HosService {
 		if (driver == null) {
 			return RESPONSE_USER_NOT_FOUND;
 		}
-
-		//send message to JMS
-		sendToJms(driver,startPeriod,endPeriod);
 		// get list of activities for the driver
 
 		List<DutyEvents> events = dutyEventsRepository.getEventsForPeriod(username, startPeriod, endPeriod);
@@ -96,16 +93,36 @@ public class HosServiceImpl implements HosService {
 		return sum;
 	}
 
-	private void sendToJms(Driver driver, Date startPeriod, Date endPeriod) {
-		StringBuilder text = new StringBuilder();
-//		text.append("«апрос расчета активности дл€ водител€ ");
+	public void sendToJms(String username, Date startPeriod, Date endPeriod) {
+		// check if driver with the username exists
+		Driver driver = driverRepository.findByUserName(username);
+
+		// TODO log or how to inform about fail?
+		if (driver == null) {
+			return;
+		}
+
+		StringBuilder text = new StringBuilder(); 
 		text.append("Request for a calculation of a driver's activity ");
 		text.append(driver.getSurname());
 		text.append(", ");
 		text.append(driver.getName());
 		text.append(" during the period ");
 		text.append(dateFormat.format(startPeriod)).append(" - ").append(dateFormat.format(endPeriod));
-		jmsTemplate.convertAndSend(text.toString());
+		try {
+			jmsTemplate.convertAndSend(text.toString());
+		} catch (JmsException ex) {
+			// TODO add logging
+			System.out.println(ex.getMessage());
+		}
+	}
+
+	public void setDutyEventsRepository(DutyRepository dutyEventsRepository) {
+		this.dutyEventsRepository = dutyEventsRepository;
+	}
+
+	public void setDriverRepository(DriverRepository driverRepository) {
+		this.driverRepository = driverRepository;
 	}
 
 }
