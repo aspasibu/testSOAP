@@ -2,7 +2,7 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:jpa="http://www.springframework.org/schema/data/jpa"
 	xmlns:jaxws="http://cxf.apache.org/jaxws" xmlns:context="http://www.springframework.org/schema/context"
-	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:aop="http://www.springframework.org/schema/aop"
 	xsi:schemaLocation="
 http://www.springframework.org/schema/beans
 http://www.springframework.org/schema/beans/spring-beans.xsd
@@ -12,6 +12,8 @@ http://www.springframework.org/schema/data/jpa
 http://www.springframework.org/schema/data/jpa/spring-jpa.xsd
 http://www.springframework.org/schema/tx
 http://www.springframework.org/schema/tx/spring-tx.xsd
+http://www.springframework.org/schema/aop
+http://www.springframework.org/schema/aop/spring-aop.xsd
 http://cxf.apache.org/jaxws
 http://cxf.apache.org/schemas/jaxws.xsd">
 
@@ -23,7 +25,8 @@ http://cxf.apache.org/schemas/jaxws.xsd">
 
 	<bean id="driverService" class="org.aspasibu.logitest.service.impl.DriverServiceImpl" />
 
-	<bean id="driverBean" class="org.aspasibu.logitest.webservices.DriverWebServiceImpl">
+	<bean id="driverBean"
+		class="org.aspasibu.logitest.webservices.impl.DriverWebServiceImpl">
 		<property name="ds" ref="driverService" />
 	</bean>
 
@@ -32,7 +35,8 @@ http://cxf.apache.org/schemas/jaxws.xsd">
 
 	<bean id="dutyService" class="org.aspasibu.logitest.service.impl.DutyServiceImpl" />
 
-	<bean id="dutyBean" class="org.aspasibu.logitest.webservices.DutyWebServiceImpl">
+	<bean id="dutyBean"
+		class="org.aspasibu.logitest.webservices.impl.DutyWebServiceImpl">
 		<property name="as" ref="dutyService" />
 	</bean>
 
@@ -41,7 +45,8 @@ http://cxf.apache.org/schemas/jaxws.xsd">
 
 	<bean id="hosService" class="org.aspasibu.logitest.service.impl.HosServiceImpl" />
 
-	<bean id="hosBean" class="org.aspasibu.logitest.webservices.HosWebServiceImpl">
+	<bean id="hosBean"
+		class="org.aspasibu.logitest.webservices.impl.HosWebServiceImpl">
 		<property name="hs" ref="hosService" />
 	</bean>
 
@@ -84,29 +89,40 @@ http://cxf.apache.org/schemas/jaxws.xsd">
 	<bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
 		<property name="entityManagerFactory" ref="emf" />
 	</bean>
-	
-  <!-- Activemq connection factory -->
-  <bean id="amqConnectionFactory" class="org.apache.activemq.ActiveMQConnectionFactory">    
-    <constructor-arg index="0" value="tcp://localhost:61616" />
-  </bean>
- 
-  <!-- Pooled Spring connection factory -->
-  <bean id="connectionFactory"
-    class="org.springframework.jms.connection.CachingConnectionFactory">
-    <constructor-arg ref="amqConnectionFactory" />
-  </bean>
-   
-  <!-- Default Destination Queue Definition -->
-  <bean id="defaultDestination" class="org.apache.activemq.command.ActiveMQQueue">
-    <!-- name of the queue -->
-    <constructor-arg index="0" value="Send2Recv" />
-  </bean>
- 
-  <!-- JmsTemplate Definition -->
-  <bean id="jmsTemplate" class="org.springframework.jms.core.JmsTemplate">
-    <property name="connectionFactory" ref="connectionFactory" />
-    <property name="defaultDestination" ref="defaultDestination" />
-  </bean>
+
+	<bean id="jmsSender" class="org.aspasibu.logitest.aspect.JmsSender" />
+
+	<aop:config>
+		<aop:aspect ref="jmsSender">
+			<aop:pointcut
+				expression="execution(* org.aspasibu.logitest.service.impl.HosServiceImpl.calculate(..)) and args(username, startPeriod, endPeriod)"
+				id="pointcut1" />
+			<aop:before method="sendToJms" pointcut-ref="pointcut1" />
+		</aop:aspect>
+	</aop:config>
+
+	<!-- Activemq connection factory -->
+	<bean id="amqConnectionFactory" class="org.apache.activemq.ActiveMQConnectionFactory">
+		<constructor-arg index="0" value="tcp://localhost:61616" />
+	</bean>
+
+	<!-- Pooled Spring connection factory -->
+	<bean id="connectionFactory"
+		class="org.springframework.jms.connection.CachingConnectionFactory">
+		<constructor-arg ref="amqConnectionFactory" />
+	</bean>
+
+	<!-- Default Destination Queue Definition -->
+	<bean id="defaultDestination" class="org.apache.activemq.command.ActiveMQQueue">
+		<!-- name of the queue -->
+		<constructor-arg index="0" value="Send2Recv" />
+	</bean>
+
+	<!-- JmsTemplate Definition -->
+	<bean id="jmsTemplate" class="org.springframework.jms.core.JmsTemplate">
+		<property name="connectionFactory" ref="connectionFactory" />
+		<property name="defaultDestination" ref="defaultDestination" />
+	</bean>
 
 </beans>
 

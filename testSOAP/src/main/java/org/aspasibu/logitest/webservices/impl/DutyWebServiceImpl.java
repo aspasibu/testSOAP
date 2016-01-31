@@ -1,9 +1,10 @@
-package org.aspasibu.logitest.webservices;
+package org.aspasibu.logitest.webservices.impl;
 
 import javax.jws.WebService;
 
 import org.aspasibu.logitest.service.DutyService;
 import org.aspasibu.logitest.types.DutyResponseType;
+import org.aspasibu.logitest.webservices.DutyWebService;
 
 @WebService(endpointInterface = "org.aspasibu.logitest.webservices.DutyWebService")
 public class DutyWebServiceImpl implements DutyWebService {

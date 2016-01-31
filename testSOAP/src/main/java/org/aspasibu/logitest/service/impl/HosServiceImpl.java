@@ -22,16 +22,11 @@ public class HosServiceImpl implements HosService {
 
 	private final String RESPONSE_USER_NOT_FOUND = "USER NOT FOUND";
 
-	private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy.MM.dd HH:mm:ss");
-
 	@Autowired
 	private DutyRepository dutyEventsRepository;
 
 	@Autowired
 	private DriverRepository driverRepository;
-
-	@Autowired
-	private JmsTemplate jmsTemplate;
 
 	@Override
 	public String calculate(String username, Date startPeriod, Date endPeriod) {
@@ -91,30 +86,6 @@ public class HosServiceImpl implements HosService {
 		}
 
 		return sum;
-	}
-
-	public void sendToJms(String username, Date startPeriod, Date endPeriod) {
-		// check if driver with the username exists
-		Driver driver = driverRepository.findByUserName(username);
-
-		// TODO log or how to inform about fail?
-		if (driver == null) {
-			return;
-		}
-
-		StringBuilder text = new StringBuilder(); 
-		text.append("Request for a calculation of a driver's activity ");
-		text.append(driver.getSurname());
-		text.append(", ");
-		text.append(driver.getName());
-		text.append(" during the period ");
-		text.append(dateFormat.format(startPeriod)).append(" - ").append(dateFormat.format(endPeriod));
-		try {
-			jmsTemplate.convertAndSend(text.toString());
-		} catch (JmsException ex) {
-			// TODO add logging
-			System.out.println(ex.getMessage());
-		}
 	}
 
 	public void setDutyEventsRepository(DutyRepository dutyEventsRepository) {

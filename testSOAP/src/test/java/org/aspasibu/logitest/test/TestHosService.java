@@ -38,30 +38,30 @@ public class TestHosService {
 
 	@Test
 	public void testCalculate() {
-		expect(driverRepository.findByUserName("")).andReturn(null).times(1);		
+		expect(driverRepository.findByUserName("")).andReturn(null).times(1);
 		expect(driverRepository.findByUserName("")).andReturn(new Driver()).anyTimes();
-        Date startPeriod = new Date(0);
-        Date endPeriod = new Date(15000);
-        Driver driver = new Driver();
-        
+		Date startPeriod = new Date(0);
+		Date endPeriod = new Date(15000);
+		Driver driver = new Driver();
+
 		List<DutyEvents> events = new ArrayList<>();
 		events.add(new DutyEvents(driver, EventType.LOGIN, new Date(3000)));
 		events.add(new DutyEvents(driver, EventType.LOGIN, new Date(5000)));
 		events.add(new DutyEvents(driver, EventType.LOGOUT, new Date(10000)));
 		events.add(new DutyEvents(driver, EventType.LOGOUT, new Date(11000)));
-		
+
 		expect(dutyRepository.getEventsForPeriod("", startPeriod, endPeriod)).andReturn(events);
 		expect(dutyRepository.getEventsForPeriod("", null, null)).andReturn(null);
 		replay(driverRepository);
 		replay(dutyRepository);
-		
+
 		((HosServiceImpl) hosService).setDriverRepository(driverRepository);
 		((HosServiceImpl) hosService).setDutyEventsRepository(dutyRepository);
-		
-		assertEquals("User not found",hosService.calculate("", startPeriod, endPeriod), "USER NOT FOUND");
-		assertEquals("5 millis",hosService.calculate("", startPeriod, endPeriod), LogiTestUtils.convertMillisToStrHours(5000));
-		assertEquals("Empty events",hosService.calculate("", null, null), LogiTestUtils.convertMillisToStrHours(0));
-		
+
+		assertEquals("User not found", hosService.calculate("", startPeriod, endPeriod), "USER NOT FOUND");
+		assertEquals("5 millis", hosService.calculate("", startPeriod, endPeriod), LogiTestUtils.convertMillisToStrHours(5000));
+		assertEquals("Empty events", hosService.calculate("", null, null), LogiTestUtils.convertMillisToStrHours(0));
+
 		verify(driverRepository);
 		verify(dutyRepository);
 	}

@@ -13,7 +13,7 @@ public class LogiTestUtils {
 		long hours = seconds / 3600;
 		long minutes = seconds / 60;
 		minutes -= hours * 60;
-		seconds -= hours * 3600+minutes*60;
+		seconds -= hours * 3600 + minutes * 60;
 
 		return String.format("%d h. %d min. %d sec.", hours, minutes, seconds);
 	}

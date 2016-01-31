@@ -7,6 +7,5 @@ import org.aspasibu.logitest.entity.Driver;
 public interface HosService {
 
 	public String calculate(String username, Date startPeriod, Date endPeriod);
-
-	public void sendToJms(String username, Date startPeriod, Date endPeriod);
+	
 }

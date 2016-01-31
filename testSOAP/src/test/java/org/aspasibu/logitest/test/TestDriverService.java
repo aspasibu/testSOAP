@@ -42,9 +42,9 @@ public class TestDriverService {
 
 		((DriverServiceImpl) driverService).setDriverRepository(driverRepository);
 
-		assertEquals("Message", driverService.addDriver("surname", "name", "username", "pass"), String.valueOf(1));
-		assertEquals("Message", driverService.addDriver("surname", "name", "username", "pass"), DriverResponseType.DATABASE_EXCEPTION.toString());
-		assertEquals("Message", driverService.addDriver("", "", "USERNAME", ""), DriverResponseType.ALREADY_CREATED.toString());
+		assertEquals("add driver - success", driverService.addDriver("surname", "name", "username", "pass"), String.valueOf(1));
+		assertEquals("add driver - database exception", driverService.addDriver("surname", "name", "username", "pass"), DriverResponseType.DATABASE_EXCEPTION.toString());
+		assertEquals("add driver - already created", driverService.addDriver("", "", "USERNAME", ""), DriverResponseType.ALREADY_CREATED.toString());
 
 		verify(driverRepository);
 	}
@@ -58,8 +58,8 @@ public class TestDriverService {
 		
 		((DriverServiceImpl) driverService).setDriverRepository(driverRepository);
 
-		assertEquals("Message", driverService.deleteDriver((long) 1), DriverResponseType.SICCESSFULLY_DELETED.toString());
-		assertEquals("Message", driverService.deleteDriver((long) 1), DriverResponseType.DATABASE_EXCEPTION.toString());		
+		assertEquals("delete driver - success", driverService.deleteDriver((long) 1), DriverResponseType.SICCESSFULLY_DELETED.toString());
+		assertEquals("delete driver - database exception", driverService.deleteDriver((long) 1), DriverResponseType.DATABASE_EXCEPTION.toString());		
 
 		verify(driverRepository);
 	}
@@ -73,8 +73,8 @@ public class TestDriverService {
 		replay(driverRepository);
 		((DriverServiceImpl) driverService).setDriverRepository(driverRepository);
 
-		assertEquals("Message", driverService.editDriver(driver), DriverResponseType.SICCESSFULLY_EDITED.toString());
-		assertEquals("Message", driverService.editDriver(driver), DriverResponseType.DATABASE_EXCEPTION.toString());
+		assertEquals("edit driver - success", driverService.editDriver(driver), DriverResponseType.SICCESSFULLY_EDITED.toString());
+		assertEquals("edit driver - database exception", driverService.editDriver(driver), DriverResponseType.DATABASE_EXCEPTION.toString());
 
 		verify(driverRepository);
 	}
