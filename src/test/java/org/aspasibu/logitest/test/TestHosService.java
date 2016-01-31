@@ -26,7 +26,7 @@ import org.springframework.test.util.ReflectionTestUtils;
 public class TestHosService {
 
 	private DutyRepository dutyRepository;
-	private DriverRepository driverRepository;
+	private DriverRepository driverRepository;	
 	private HosService hosService;
 
 	@Before
