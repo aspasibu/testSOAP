@@ -45,6 +45,7 @@ public class TestHosService {
 		Driver driver = new Driver();
 
 		List<DutyEvents> events = new ArrayList<>();
+
 		events.add(new DutyEvents(driver, EventType.LOGIN, new Date(3000)));
 		events.add(new DutyEvents(driver, EventType.LOGIN, new Date(5000)));
 		events.add(new DutyEvents(driver, EventType.LOGOUT, new Date(10000)));

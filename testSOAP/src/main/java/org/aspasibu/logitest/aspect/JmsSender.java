@@ -12,35 +12,34 @@ import org.springframework.jms.core.JmsTemplate;
 /**
  * @author aspasibu
  *
- * Class responsible for sending jms messages
+ *         Class responsible for sending jms messages
  */
 public class JmsSender {
-	
+
 	private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy.MM.dd HH:mm:ss");
-	
+
 	@Autowired
 	private JmsTemplate jmsTemplate;
-	
+
 	@Autowired
 	private DriverRepository driverRepository;
-	
-	public JmsSender() {		
+
+	public JmsSender() {
 	}
-	
+
 	public void sendToJms(String username, Date startPeriod, Date endPeriod) {
 		// check if driver with the username exists
 		Driver driver = driverRepository.findByUserName(username);
 
-		// TODO log or how to inform about fail?
-		if (driver == null) {
-			return;
-		}
-
-		StringBuilder text = new StringBuilder(); 
+		StringBuilder text = new StringBuilder();
 		text.append("Request for a calculation of a driver's activity ");
-		text.append(driver.getSurname());
-		text.append(", ");
-		text.append(driver.getName());
+		if (driver == null) {
+			text.append(username);
+		} else {
+			text.append(driver.getSurname());
+			text.append(", ");
+			text.append(driver.getName());
+		}
 		text.append(" during the period ");
 		text.append(dateFormat.format(startPeriod)).append(" - ").append(dateFormat.format(endPeriod));
 		try {
