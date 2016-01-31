@@ -15,6 +15,7 @@ import org.aspasibu.logitest.types.DriverResponseType;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.springframework.test.util.ReflectionTestUtils;
 
 public class TestDriverService {
 	private DriverRepository driverRepository;
@@ -26,6 +27,8 @@ public class TestDriverService {
 	public void setUp() throws Exception {
 		driverRepository = createNiceMock(DriverRepository.class);
 		driverService = new DriverServiceImpl();
+		ReflectionTestUtils.setField(driverService, "driverRepository", driverRepository);
+		
 		driver = new Driver("surname", "name", "username", "pass");
 		driverResponse = new Driver("surname", "name", "username", "pass");
 		driverResponse.setId(new Long(1));
@@ -38,9 +41,7 @@ public class TestDriverService {
 		expect(driverRepository.findByUserName("USERNAME")).andReturn(driverResponse);
 		expect(driverRepository.saveAndFlush(driver)).andThrow(new RuntimeException());
 
-		replay(driverRepository);
-
-		((DriverServiceImpl) driverService).setDriverRepository(driverRepository);
+		replay(driverRepository);		
 
 		assertEquals("add driver - success", driverService.addDriver("surname", "name", "username", "pass"), String.valueOf(1));
 		assertEquals("add driver - database exception", driverService.addDriver("surname", "name", "username", "pass"), DriverResponseType.DATABASE_EXCEPTION.toString());
@@ -54,9 +55,7 @@ public class TestDriverService {
 		driverRepository.delete((long) 1);
 		expectLastCall().times(1);		
 		expectLastCall().andThrow(new RuntimeException());
-		replay(driverRepository);
-		
-		((DriverServiceImpl) driverService).setDriverRepository(driverRepository);
+		replay(driverRepository);				
 
 		assertEquals("delete driver - success", driverService.deleteDriver((long) 1), DriverResponseType.SICCESSFULLY_DELETED.toString());
 		assertEquals("delete driver - database exception", driverService.deleteDriver((long) 1), DriverResponseType.DATABASE_EXCEPTION.toString());		
@@ -70,8 +69,7 @@ public class TestDriverService {
 		expect(driverRepository.saveAndFlush(driver)).andReturn(driverResponse).times(1);
 		expect(driverRepository.saveAndFlush(driver)).andThrow(new RuntimeException());
 
-		replay(driverRepository);
-		((DriverServiceImpl) driverService).setDriverRepository(driverRepository);
+		replay(driverRepository);		
 
 		assertEquals("edit driver - success", driverService.editDriver(driver), DriverResponseType.SICCESSFULLY_EDITED.toString());
 		assertEquals("edit driver - database exception", driverService.editDriver(driver), DriverResponseType.DATABASE_EXCEPTION.toString());

@@ -4,7 +4,6 @@ import static org.easymock.EasyMock.createNiceMock;
 import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.replay;
 import static org.easymock.EasyMock.verify;
-import static org.easymock.EasyMock.expectLastCall;
 
 import static org.junit.Assert.assertEquals;
 
@@ -22,6 +21,7 @@ import org.aspasibu.logitest.service.HosService;
 import org.aspasibu.logitest.service.impl.HosServiceImpl;
 import org.junit.Before;
 import org.junit.Test;
+import org.springframework.test.util.ReflectionTestUtils;
 
 public class TestHosService {
 
@@ -30,10 +30,12 @@ public class TestHosService {
 	private HosService hosService;
 
 	@Before
-	public void setUp() throws Exception {
+	public void setUp() throws Exception {		
 		dutyRepository = createNiceMock(DutyRepository.class);
-		driverRepository = createNiceMock(DriverRepository.class);
+		driverRepository = createNiceMock(DriverRepository.class);		
 		hosService = new HosServiceImpl();
+		ReflectionTestUtils.setField(hosService, "driverRepository", driverRepository);
+		ReflectionTestUtils.setField(hosService, "dutyEventsRepository", dutyRepository);
 	}
 
 	@Test
@@ -56,11 +58,8 @@ public class TestHosService {
 		replay(driverRepository);
 		replay(dutyRepository);
 
-		((HosServiceImpl) hosService).setDriverRepository(driverRepository);
-		((HosServiceImpl) hosService).setDutyEventsRepository(dutyRepository);
-
 		assertEquals("User not found", hosService.calculate("", startPeriod, endPeriod), "USER NOT FOUND");
-		assertEquals("5 millis", hosService.calculate("", startPeriod, endPeriod), LogiTestUtils.convertMillisToStrHours(5000));
+		assertEquals("Test calculation", hosService.calculate("", startPeriod, endPeriod), LogiTestUtils.convertMillisToStrHours(5000));
 		assertEquals("Empty events", hosService.calculate("", null, null), LogiTestUtils.convertMillisToStrHours(0));
 
 		verify(driverRepository);

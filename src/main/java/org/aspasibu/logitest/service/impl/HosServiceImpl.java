@@ -1,6 +1,5 @@
 package org.aspasibu.logitest.service.impl;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -12,8 +11,6 @@ import org.aspasibu.logitest.repository.DriverRepository;
 import org.aspasibu.logitest.repository.DutyRepository;
 import org.aspasibu.logitest.service.HosService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jms.JmsException;
-import org.springframework.jms.core.JmsTemplate;
 
 public class HosServiceImpl implements HosService {
 
@@ -87,13 +84,4 @@ public class HosServiceImpl implements HosService {
 
 		return sum;
 	}
-
-	public void setDutyEventsRepository(DutyRepository dutyEventsRepository) {
-		this.dutyEventsRepository = dutyEventsRepository;
-	}
-
-	public void setDriverRepository(DriverRepository driverRepository) {
-		this.driverRepository = driverRepository;
-	}
-
 }

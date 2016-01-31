@@ -49,19 +49,4 @@ public class DriverServiceImpl implements DriverService {
 		}
 	}
 
-	/**
-	 * @return the driverRepository
-	 */
-	public DriverRepository getDriverRepository() {
-		return driverRepository;
-	}
-
-	/**
-	 * @param driverRepository
-	 *            the driverRepository to set
-	 */
-	public void setDriverRepository(DriverRepository driverRepository) {
-		this.driverRepository = driverRepository;
-	}
-
 }
