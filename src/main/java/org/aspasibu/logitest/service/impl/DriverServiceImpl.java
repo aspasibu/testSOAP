@@ -1,5 +1,6 @@
 package org.aspasibu.logitest.service.impl;
 
+import org.aspasibu.logitest.LogiTestUtils;
 import org.aspasibu.logitest.entity.Driver;
 import org.aspasibu.logitest.repository.DriverRepository;
 import org.aspasibu.logitest.service.DriverService;
@@ -31,6 +32,10 @@ public class DriverServiceImpl implements DriverService {
 
 	@Override
 	public String deleteDriver(Long id) {
+		if (driverRepository.findOne(id) == null) {
+			return DriverResponseType.USER_NOT_FOUND.toString();
+		}
+
 		try {
 			driverRepository.delete(id);
 			return DriverResponseType.SICCESSFULLY_DELETED.toString();
@@ -41,8 +46,19 @@ public class DriverServiceImpl implements DriverService {
 
 	@Override
 	public String editDriver(Driver driver) {
+		if (driver == null) {
+			return DriverResponseType.WRONG_REQUEST.toString();
+		}
+
+		Driver orginalDriver = driverRepository.findOne(driver.getId());
+		if (orginalDriver == null) {
+			return DriverResponseType.USER_NOT_FOUND.toString();
+		}
+
+		LogiTestUtils.copyProperties(driver, orginalDriver);
+
 		try {
-			driverRepository.saveAndFlush(driver);
+			driverRepository.saveAndFlush(orginalDriver);
 			return DriverResponseType.SICCESSFULLY_EDITED.toString();
 		} catch (Exception e) {
 			return DriverResponseType.DATABASE_EXCEPTION.toString();
