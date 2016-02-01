@@ -15,23 +15,8 @@ public class HosWebServiceImpl implements HosWebService {
 	private HosService hs;
 
 	@Override
-	public String calculate(String username, Date startPeriod, Date endPeriod) {		
+	public String calculate(String username, Date startPeriod, Date endPeriod) {
 		return hs.calculate(username, startPeriod, endPeriod);
-	}
-
-	/**
-	 * @return the hs
-	 */
-	public HosService getHs() {
-		return hs;
-	}
-
-	/**
-	 * @param hs
-	 *            the hs to set
-	 */
-	public void setHs(HosService hs) {
-		this.hs = hs;
 	}
 
 	@Override

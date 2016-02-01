@@ -5,11 +5,13 @@ import javax.jws.WebService;
 import org.aspasibu.logitest.service.DutyService;
 import org.aspasibu.logitest.types.DutyResponseType;
 import org.aspasibu.logitest.webservices.DutyWebService;
+import org.springframework.beans.factory.annotation.Autowired;
 
 @WebService(endpointInterface = "org.aspasibu.logitest.webservices.DutyWebService")
 public class DutyWebServiceImpl implements DutyWebService {
 
-	DutyService as;
+	@Autowired
+	private DutyService as;
 
 	@Override
 	public DutyResponseType logIn(String userName, String password) {
@@ -20,13 +22,4 @@ public class DutyWebServiceImpl implements DutyWebService {
 	public DutyResponseType logOut(String userName) {
 		return as.logOut(userName);
 	}
-
-	public DutyService getAs() {
-		return as;
-	}
-
-	public void setAs(DutyService as) {
-		this.as = as;
-	}
-
 }

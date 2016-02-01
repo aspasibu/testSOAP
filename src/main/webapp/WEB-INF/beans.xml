@@ -36,8 +36,7 @@ http://cxf.apache.org/schemas/jaxws.xsd">
 	<bean id="dutyService" class="org.aspasibu.logitest.service.impl.DutyServiceImpl" />
 
 	<bean id="dutyBean"
-		class="org.aspasibu.logitest.webservices.impl.DutyWebServiceImpl">
-		<property name="as" ref="dutyService" />
+		class="org.aspasibu.logitest.webservices.impl.DutyWebServiceImpl">		
 	</bean>
 
 	<jaxws:endpoint id="dutySoapService" implementor="#dutyBean"
@@ -46,8 +45,7 @@ http://cxf.apache.org/schemas/jaxws.xsd">
 	<bean id="hosService" class="org.aspasibu.logitest.service.impl.HosServiceImpl" />
 
 	<bean id="hosBean"
-		class="org.aspasibu.logitest.webservices.impl.HosWebServiceImpl">
-		<property name="hs" ref="hosService" />
+		class="org.aspasibu.logitest.webservices.impl.HosWebServiceImpl">		
 	</bean>
 
 	<jaxws:endpoint id="hosSoapService" implementor="#hosBean"
