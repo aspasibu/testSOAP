@@ -5,6 +5,8 @@ import java.util.Date;
 
 import org.aspasibu.logitest.entity.Driver;
 import org.aspasibu.logitest.repository.DriverRepository;
+import org.aspectj.lang.annotation.Aspect;
+import org.aspectj.lang.annotation.Before;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jms.JmsException;
 import org.springframework.jms.core.JmsTemplate;
@@ -14,6 +16,8 @@ import org.springframework.jms.core.JmsTemplate;
  *
  *         Class responsible for sending jms messages
  */
+
+@Aspect
 public class JmsSender {
 
 	private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy.MM.dd HH:mm:ss");
@@ -27,6 +31,7 @@ public class JmsSender {
 	public JmsSender() {
 	}
 
+	@Before("execution(* org.aspasibu.logitest.service.impl.HosServiceImpl.calculate(..)) and args(username, startPeriod, endPeriod)")
 	public void sendToJms(String username, Date startPeriod, Date endPeriod) {
 		// check if driver with the username exists
 		Driver driver = driverRepository.findByUserName(username);

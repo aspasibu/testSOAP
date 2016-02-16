@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:jpa="http://www.springframework.org/schema/data/jpa"
-	xmlns:jaxws="http://cxf.apache.org/jaxws" xmlns:context="http://www.springframework.org/schema/context"
-	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:jaxws="http://cxf.apache.org/jaxws" xmlns:context="http://www.springframework.org/schema/context"	
 	xsi:schemaLocation="
 http://www.springframework.org/schema/beans
 http://www.springframework.org/schema/beans/spring-beans.xsd
@@ -16,111 +15,23 @@ http://www.springframework.org/schema/aop
 http://www.springframework.org/schema/aop/spring-aop.xsd
 http://cxf.apache.org/jaxws
 http://cxf.apache.org/schemas/jaxws.xsd">
-
-	<tx:annotation-driven />
-	<context:component-scan base-package="org.aspasibu.logitest" />
-
-	<jpa:repositories base-package="org.aspasibu.logitest.repository" />
+	
+	<context:component-scan base-package="org.aspasibu.logitest" />	
+	
 	<import resource="classpath:META-INF/cxf/cxf.xml" />
-
-	<bean id="driverService" class="org.aspasibu.logitest.service.impl.DriverServiceImpl" />
-
-	<bean id="driverBean"
-		class="org.aspasibu.logitest.webservices.impl.DriverWebServiceImpl">
-		<property name="ds" ref="driverService" />
-	</bean>
 
 	<jaxws:endpoint id="driverSoapService" implementor="#driverBean"
 		address="/driver" />
 
-	<bean id="dutyService" class="org.aspasibu.logitest.service.impl.DutyServiceImpl" />
-
-	<bean id="dutyBean"
-		class="org.aspasibu.logitest.webservices.impl.DutyWebServiceImpl">		
-	</bean>
-
 	<jaxws:endpoint id="dutySoapService" implementor="#dutyBean"
 		address="/duty" />
-
-	<bean id="hosService" class="org.aspasibu.logitest.service.impl.HosServiceImpl" />
-
-	<bean id="hosBean"
-		class="org.aspasibu.logitest.webservices.impl.HosWebServiceImpl">		
-	</bean>
 
 	<jaxws:endpoint id="hosSoapService" implementor="#hosBean"
 		address="/hos" />
 
-	<bean id="dataSource"
-		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
-		<property name="driverClassName" value="org.postgresql.Driver" />
-		<property name="url" value="jdbc:postgresql://127.0.0.1:5432/logi" />
-		<property name="username" value="postgres" />
-		<property name="password" value="masterkey" />
-	</bean>
-
-	<bean id="emf"
-		class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
-		<property name="persistenceXmlLocation" value="classpath:META-INF/persistence.xml" />
-		<property name="dataSource" ref="dataSource" />
-		<property name="persistenceUnitName" value="drivers" />
-		<property name="packagesToScan" value="org.aspasibu.logitest.entity" />
-		<property name="jpaVendorAdapter">
-			<bean
-				class="org.springframework.orm.jpa.vendor.EclipseLinkJpaVendorAdapter">
-				<property name="showSql" value="true" />
-				<property name="generateDdl" value="true" />
-				<property name="databasePlatform"
-					value="org.eclipse.persistence.platform.database.PostgreSQLPlatform" />
-			</bean>
-		</property>
-		<property name="jpaDialect">
-			<bean class="org.springframework.orm.jpa.vendor.EclipseLinkJpaDialect" />
-		</property>
-		<property name="loadTimeWeaver">
-			<bean
-				class="org.springframework.instrument.classloading.ReflectiveLoadTimeWeaver" />
-		</property>
-
-	</bean>
-
 	<bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
-		<property name="entityManagerFactory" ref="emf" />
-	</bean>
-
-	<bean id="jmsSender" class="org.aspasibu.logitest.aspect.JmsSender" />
-
-	<aop:config>
-		<aop:aspect ref="jmsSender">
-			<aop:pointcut
-				expression="execution(* org.aspasibu.logitest.service.impl.HosServiceImpl.calculate(..)) and args(username, startPeriod, endPeriod)"
-				id="pointcut1" />
-			<aop:before method="sendToJms" pointcut-ref="pointcut1" />
-		</aop:aspect>
-	</aop:config>
-
-	<!-- Activemq connection factory -->
-	<bean id="amqConnectionFactory" class="org.apache.activemq.ActiveMQConnectionFactory">
-		<constructor-arg index="0" value="tcp://localhost:61616" />
-	</bean>
-
-	<!-- Pooled Spring connection factory -->
-	<bean id="connectionFactory"
-		class="org.springframework.jms.connection.CachingConnectionFactory">
-		<constructor-arg ref="amqConnectionFactory" />
-	</bean>
-
-	<!-- Default Destination Queue Definition -->
-	<bean id="defaultDestination" class="org.apache.activemq.command.ActiveMQQueue">
-		<!-- name of the queue -->
-		<constructor-arg index="0" value="Send2Recv" />
-	</bean>
-
-	<!-- JmsTemplate Definition -->
-	<bean id="jmsTemplate" class="org.springframework.jms.core.JmsTemplate">
-		<property name="connectionFactory" ref="connectionFactory" />
-		<property name="defaultDestination" ref="defaultDestination" />
-	</bean>
+		<property name="entityManagerFactory" ref="entityManagerFactory" />
+	</bean>	 
 
 </beans>
 
