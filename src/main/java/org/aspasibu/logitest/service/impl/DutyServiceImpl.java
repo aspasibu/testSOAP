@@ -13,7 +13,9 @@ import org.aspasibu.logitest.types.DutyResponseType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
 
+@Service
 public class DutyServiceImpl implements DutyService {
 
 	@Autowired
@@ -40,7 +42,7 @@ public class DutyServiceImpl implements DutyService {
 		}
 
 		// verify password
-		if (type == EventType.LOGIN && !driver.passwordEquals(password)){
+		if (type == EventType.LOGIN && !driver.passwordEquals(password)) {
 			return DutyResponseType.WRONG_PASSWORD;
 		}
 

@@ -11,7 +11,9 @@ import org.aspasibu.logitest.repository.DriverRepository;
 import org.aspasibu.logitest.repository.DutyRepository;
 import org.aspasibu.logitest.service.HosService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+@Service
 public class HosServiceImpl implements HosService {
 
 	// private StringBuilder responseMeassge = new StringBuilder("%SURNAME,
